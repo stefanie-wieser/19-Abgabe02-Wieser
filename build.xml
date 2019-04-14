@@ -1,0 +1,31 @@
+<project name="${name}" default = "jar">
+	<property file = "build.properties"/>
+		<target name="init">
+			<mkdir dir="${build.dir}"/>
+			<mkdir dir="${lib.dir}"/>
+			<mkdir dir="${dist.dir}"/>
+		</target>
+		<target name="clean">
+			<delete dir="${build.dir}"/>
+			<delete dir="${lib.dir}"/>
+			<delete dir="${dist.dir}"/>
+		</target>
+		<target name="compile" depends="init">
+			<javac srcdir="${build.src}" destdir="${build.dir}" includeantruntime="false"/>
+		</target>
+		<target name="jar" depends="compile">
+			<jar destfile="${build.jarname}" basedir="${build.dir}" >
+				<manifest>
+					<attribute name = "Main-Class" value = "${build.mainclass}"/>
+				</manifest>
+			</jar>
+		</target>
+		<target name="install" depends="compile, jar">
+			<copy file="${build.jarname}" todir="${dist.dir}"/>
+		</target>
+		<target name="run" depends="compile, jar, install">
+			<java jar="${build.distjarname}" fork="true">
+			<arg value="Stefanie Wieser"/>
+		</java>
+	</target> 
+</project>
